@@ -16,7 +16,7 @@
 """
 
 load("@build_bazel_rules_nodejs//:declaration_provider.bzl", "DeclarationInfo")
-load("@build_bazel_rules_nodejs//:providers.bzl", "js_named_module_info")
+load("@build_bazel_rules_nodejs//:providers.bzl", "js_module_info", "js_named_module_info")
 load("@build_bazel_rules_nodejs//internal/common:npm_package_info.bzl", "NpmPackageInfo")
 
 def _node_module_library_impl(ctx):
@@ -71,6 +71,11 @@ def _node_module_library_impl(ctx):
             DeclarationInfo(
                 declarations = declarations,
                 transitive_declarations = transitive_declarations,
+            ),
+            js_module_info(
+                module_format = "",
+                sources = direct_sources,
+                deps = ctx.attr.deps,
             ),
             js_named_module_info(
                 sources = depset(ctx.files.named_module_srcs),
